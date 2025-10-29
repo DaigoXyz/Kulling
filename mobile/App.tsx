@@ -1,60 +1,47 @@
-// App.tsx
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
-import axios from 'axios';
-
-interface FoodTruck {
-  id: number;
-  name: string;
-  location: string;
-  menu: string[];
-}
+import SplashScreen from './SplashScreen';
+import LoginScreen from './LoginScreen';
+import RegisterScreen from './RegisterScreen';
+import HomeScreen from './HomeScreen'; // Import HomeScreen
 
 export default function App() {
-  const [data, setData] = useState<FoodTruck[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
   useEffect(() => {
-    // kalau emulator Android Studio
-    // gunakan 10.0.2.2
-    // kalau HP fisik gunakan http://<IP_LAPTOP>:3000
-    const base = 'http://172.18.79.138:3000/api/foodtrucks';
-    axios.get(base)
-      .then(res => setData(res.data))
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
+    const splashTimer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2500);
+
+    return () => clearTimeout(splashTimer);
   }, []);
 
-  if (loading) {
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
+  if (showRegister) {
     return (
-      <SafeAreaView style={styles.center}>
-        <ActivityIndicator size="large" />
-      </SafeAreaView>
+      <RegisterScreen
+        onRegister={() => {
+          setShowRegister(false);
+          setIsLoggedIn(true);
+        }}
+        onBackToLogin={() => setShowRegister(false)}
+      />
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>🚚 FoodTruck (Mobile)</Text>
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text>📍 {item.location}</Text>
-            <Text>🍽️ {item.menu.join(', ')}</Text>
-          </View>
-        )}
+  if (!isLoggedIn) {
+    return (
+      <LoginScreen
+        onLogin={() => setIsLoggedIn(true)}
+        onSignUp={() => setShowRegister(true)}
       />
-    </SafeAreaView>
-  );
-}
+    );
+  }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 22, fontWeight: '700', marginBottom: 12 },
-  card: { backgroundColor: '#f3f3f3', padding: 12, borderRadius: 10, marginBottom: 10 },
-  name: { fontSize: 18, fontWeight: '600' },
-});
+  // Tampilkan HomeScreen
+  return <HomeScreen />;
+}

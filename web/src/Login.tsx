@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // ⬅️ tambahkan ini
 
-function App() {
+function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // ⬅️ inisialisasi navigate
+
+  const handleLogin = () => {
+    // nanti bisa ditambah validasi / request API login
+    navigate("/Registrasi"); // ⬅️ pindah ke dashboard
+  };
 
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-[#f6f0e5] font-[Arial]">
@@ -100,7 +107,10 @@ function App() {
         </div>
 
         {/* Login Button */}
-        <div className="w-full h-[55px] bg-[#f5c14b] hover:bg-[#eab73c] text-[#5a2d00] font-semibold text-[13px] flex justify-center items-center rounded-[10px] shadow-sm cursor-pointer transition-all">
+        <div
+          onClick={handleLogin} // ⬅️ klik akan pindah ke dashboard
+          className="w-full h-[55px] bg-[#f5c14b] hover:bg-[#eab73c] text-[#5a2d00] font-semibold text-[13px] flex justify-center items-center rounded-[10px] shadow-sm cursor-pointer transition-all"
+        >
           Login
         </div>
 
@@ -116,4 +126,4 @@ function App() {
   );
 }
 
-export default App;
+export default Login;

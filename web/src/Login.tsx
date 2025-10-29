@@ -7,7 +7,7 @@ function Login() {
 
   const handleLogin = () => {
     // nanti bisa ditambah validasi / request API login
-    navigate("/Registrasi"); // ⬅️ pindah ke dashboard
+    navigate("/Dashboard"); // ⬅️ pindah ke dashboard
   };
 
   return (

@@ -7,7 +7,7 @@ function Login() {
 
   const handleLogin = () => {
     // nanti bisa ditambah validasi / request API login
-    navigate("/Registrasi"); // ⬅️ pindah ke dashboard
+    navigate("/Dashboard"); // ⬅️ pindah ke dashboard
   };
 
   return (
@@ -109,18 +109,10 @@ function Login() {
         {/* Login Button */}
         <div
           onClick={handleLogin} // ⬅️ klik akan pindah ke dashboard
-          className="w-full h-[55px] bg-[#f5c14b] hover:bg-[#eab73c] text-[#5a2d00] font-semibold text-[13px] flex justify-center items-center rounded-[10px] shadow-sm cursor-pointer transition-all"
+          className="w-full h-[55px] bg-[#f5c14b] hover:bg-[#eab73c] text-red-900 font-semibold text-[13px] flex justify-center items-center rounded-[10px] shadow-sm cursor-pointer transition-all"
         >
           Login
         </div>
-
-        {/* Sign Up */}
-        <p className="text-[10px] text-gray-600 mt-3 text-center">
-          Don’t have an account?{" "}
-          <a href="#" className="text-[#2e6de2] hover:underline">
-            Sign Up
-          </a>
-        </p>
       </div>
     </div>
   );

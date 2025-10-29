@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Login";
-import Dashboard from "./Registrasi";
+import Dashboard from "./Admin/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/Registrasi",
+    path: "/Dashboard",
     element: <Dashboard />,
   },
 ]);

@@ -82,31 +82,44 @@ const [active, setActive] = useState("Dashboard");
         <img src="/image/Logo.png" alt="Logo" className="w-100 h-auto mr-2" />
       </div>
 
-      {/* Sidebar Menu */}
-      <nav className="flex flex-col space-y-3 text-red-700 flex-1">
-        {dbItem.map((item) => {
-          const isActive = active === item.name;
-          return (
-            <button
-              key={item.name}
-              onClick={() => setActive(item.name)}
-              className={`flex items-center gap-2 font-semibold px-4 py-2 rounded border border-white transition-all duration-300
-              ${
-                isActive
-                  ? "bg-gradient-to-r from-red-900 to-white-900 text-white"
-                  : "bg-white text-red-700 hover:bg-gradient-to-r hover:from-red-900 hover:to-white-900 hover:text-white"
-              }`}
-            >
-              <img
-                src={isActive ? item.iconWhite : item.iconRed}
-                alt={item.name}
-                className="w-5 h-5"
-              />
-              {item.name}
-            </button>
-          );
-        })}
-      </nav>
+    {/* Sidebar Menu */}
+    <nav className="flex flex-col space-y-3 text-red-700 flex-1">
+    {dbItem.map((item) => {
+        const isActive = active === item.name;
+        return (
+        <button
+            key={item.name}
+            onClick={() => setActive(item.name)}
+            className={`group flex items-center gap-2 font-semibold px-4 py-2 rounded border border-white transition-all duration-300
+            ${
+            isActive
+                ? "bg-gradient-to-r from-red-900 to-white-900 text-white"
+                : "bg-white text-red-700 hover:bg-gradient-to-r hover:from-red-900 hover:to-white-900 hover:text-white"
+            }`}
+        >
+            {/* Gambar berubah sesuai hover/aktif */}
+            <img
+            src={isActive ? item.iconWhite : item.iconRed}
+            alt={item.name}
+            className={`w-5 h-5 transition-all duration-300 group-hover:hidden ${
+                isActive ? "hidden" : "inline"
+            }`}
+            />
+            <img
+            src={item.iconWhite}
+            alt={item.name}
+            className={`w-5 h-5 transition-all duration-300 hidden group-hover:inline ${
+                isActive ? "inline" : ""
+            }`}
+            />
+
+            {/* Nama Menu */}
+            {item.name}
+        </button>
+        );
+    })}
+    </nav>
+
 
       {/* Logout */}
       <div className="mt-auto pt-6 border-t border-gray-200">

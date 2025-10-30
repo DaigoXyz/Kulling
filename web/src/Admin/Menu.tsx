@@ -89,11 +89,23 @@ function AdminDashboard() {
                       : "bg-white text-red-700 hover:bg-gradient-to-r hover:from-red-900 hover:to-white-900 hover:text-white"
                   }`}
               >
+                {/* Gambar berubah sesuai hover/aktif */}
                 <img
-                  src={isActive ? item.iconWhite : item.iconRed}
-                  alt={item.name}
-                  className="w-5 h-5 transition-all duration-300"
+                src={isActive ? item.iconWhite : item.iconRed}
+                alt={item.name}
+                className={`w-5 h-5 transition-all duration-300 group-hover:hidden ${
+                    isActive ? "hidden" : "inline"
+                }`}
                 />
+                <img
+                src={item.iconWhite}
+                alt={item.name}
+                className={`w-5 h-5 transition-all duration-300 hidden group-hover:inline ${
+                    isActive ? "inline" : ""
+                }`}
+                />
+
+                {/* Nama Menu */}
                 {item.name}
               </button>
             );

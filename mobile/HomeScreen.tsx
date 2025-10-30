@@ -80,31 +80,34 @@ export default function HomeScreen() {
       <View style={styles.menuImageContainer}>
         <Text style={styles.burgerEmoji}>🍔</Text>
       </View>
-      
+
       <View style={styles.menuInfo}>
-        <Text style={styles.menuName}>{item.name}</Text>
-        <Text style={styles.menuDescription}>{item.description}</Text>
-        
-        <View style={styles.ratingContainer}>
-          <Text style={styles.star}>⭐</Text>
-          <Text style={styles.rating}>{item.rating}</Text>
+        <View style={styles.menuHeader}>
+          <Text style={styles.menuName}>{item.name}</Text>
+          <View style={styles.ratingContainer}>
+            <Text style={styles.star}>⭐</Text>
+            <Text style={styles.rating}>{item.rating}</Text>
+          </View>
         </View>
-        
+
+        <Text style={styles.menuDescription}>{item.description}</Text>
         <Text style={styles.price}>Rp {item.price.toLocaleString('id-ID')}</Text>
       </View>
 
       <View style={styles.menuActions}>
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addButtonText}>+</Text>
-        </TouchableOpacity>
-        
         <TouchableOpacity
           style={styles.favoriteButton}
           onPress={() => toggleFavorite(item.id)}
         >
-          <Text style={styles.favoriteIcon}>
-            {favorites.includes(item.id) ? '❤️' : '🤍'}
-          </Text>
+          <Image
+            source={require('./assets/favorit.png')}
+            style={styles.favoriteIconImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.addButton}>
+          <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -112,58 +115,81 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.logo}>🚚</Text>
-          <View>
-            <Text style={styles.brandName}>KULLING</Text>
-            <Text style={styles.brandTagline}>STREET FOOD</Text>
+      {/* Header with Background Image */}
+      <View style={styles.headerContainer}>
+        <Image
+          source={require('./assets/background.png')}
+          style={styles.headerBackground}
+          resizeMode="cover"
+        />
+        <View style={styles.headerContent}>
+          <View style={styles.headerTop}>
+            <View style={styles.headerLeft}>
+              <Image
+                source={require('./assets/logo1.png')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+            </View>
+
+            <View style={styles.headerRight}>
+              <TouchableOpacity style={styles.iconButton}>
+                <Image
+                  source={require('./assets/lonceng.png')}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconButton}>
+                <Image
+                  source={require('./assets/keranjang.png')}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconButton}>
+                <Image
+                  source={require('./assets/logout.png')}
+                  style={styles.iconImage}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.icon}>🔔</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.icon}>🛒</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.icon}>↗️</Text>
-          </TouchableOpacity>
+
+          {/* Search Bar Inside Header */}
+          <View style={styles.searchContainer}>
+            <View style={styles.searchInputContainer}>
+              <TextInput
+                style={styles.searchInput}
+                placeholder="Search..."
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholderTextColor="#999"
+              />
+              <TouchableOpacity style={styles.searchIconButton}>
+                <Image
+                  source={require('./assets/search.png')}
+                  style={styles.searchIconImage}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            placeholderTextColor="#999"
-          />
-          <TouchableOpacity style={styles.searchButton}>
-            <Text style={styles.searchIcon}>🔍</Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Location */}
         <Text style={styles.location}>Lokasi Anda: Jl. anggur</Text>
 
         {/* Voucher Banner */}
         <View style={styles.voucherBanner}>
-          <View style={styles.voucherLeft}>
-            <Text style={styles.voucherTitle}>VOUCHER</Text>
-            <Text style={styles.voucherValue}>VALUE $50</Text>
-            <Text style={styles.voucherCode}>Code: 123.4455.7890</Text>
-          </View>
-          <View style={styles.voucherRight}>
+          <View style={styles.voucherWrapper}>
             <Image
-              source={{ uri: 'https://via.placeholder.com/150' }}
-              style={styles.voucherImage}
+              source={require('./assets/vocher.png')}
+              style={styles.voucherPicture}
+              resizeMode="cover"
             />
           </View>
         </View>
@@ -192,7 +218,7 @@ export default function HomeScreen() {
               </TouchableOpacity>
             ))}
           </ScrollView>
-          
+
           <TouchableOpacity style={styles.filterButton}>
             <Text style={styles.filterIcon}>☰</Text>
           </TouchableOpacity>
@@ -213,16 +239,32 @@ export default function HomeScreen() {
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🏠</Text>
+          <Image
+            source={require('./assets/homee.png')}
+            style={styles.navIconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🤍</Text>
+          <Image
+            source={require('./assets/favorit.png')}
+            style={styles.navIconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>🕐</Text>
+          <Image
+            source={require('./assets/history.png')}
+            style={styles.navIconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navIcon}>👤</Text>
+          <Image
+            source={require('./assets/account.png')}
+            style={styles.navIconImage}
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -234,21 +276,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EAE1D8',
   },
-  header: {
+  headerContainer: {
+    position: 'relative',
+    height: 160,
+  },
+  headerBackground: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  headerContent: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 16,
+  },
+  headerTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: '#B91C1C',
+    marginBottom: 16,
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    marginLeft: -8,
   },
   logo: {
-    fontSize: 32,
+    width: 210,
+    height: 85,
+    marginTop: 8,
+    marginLeft: -12,
   },
   brandName: {
     fontSize: 16,
@@ -263,38 +321,41 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 12,
   },
   iconButton: {
-    padding: 4,
-  },
-  icon: {
-    fontSize: 20,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    gap: 8,
-  },
-  searchInput: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    borderRadius: 25,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    fontSize: 14,
-  },
-  searchButton: {
-    backgroundColor: '#FFF',
-    borderRadius: 25,
-    width: 48,
-    height: 48,
+    width: 24,
+    height: 24,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  searchIcon: {
-    fontSize: 20,
+  iconImage: {
+    width: 24,
+    height: 24,
+  },
+  searchContainer: {
+    paddingHorizontal: 0,
+  },
+  searchInputContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#FFF',
+    borderRadius: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 14,
+    color: '#000',
+    padding: 0,
+  },
+  searchIconButton: {
+    marginLeft: 8,
+  },
+  searchIconImage: {
+    width: 20,
+    height: 20,
   },
   location: {
     paddingHorizontal: 16,
@@ -304,52 +365,27 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   voucherBanner: {
-    flexDirection: 'row',
-    backgroundColor: '#FFF',
     marginHorizontal: 16,
     marginTop: 16,
+    marginBottom: 20,
     borderRadius: 16,
-    padding: 16,
-    borderWidth: 2,
-    borderColor: '#B91C1C',
-    borderStyle: 'dashed',
+    overflow: 'hidden',
+    height: 130,
   },
-  voucherLeft: {
-    flex: 1,
-  },
-  voucherTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#B91C1C',
-  },
-  voucherValue: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: '#000',
-    marginTop: 4,
-  },
-  voucherCode: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 4,
-  },
-  voucherRight: {
-    width: 120,
-    height: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  voucherImage: {
+  voucherWrapper: {
     width: '100%',
     height: '100%',
-    borderRadius: 8,
+  },
+  voucherPicture: {
+    width: '100%',
+    height: '100%',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '700',
     color: '#000',
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 0,
     paddingBottom: 12,
   },
   categoryContainer: {
@@ -425,11 +461,17 @@ const styles = StyleSheet.create({
   menuInfo: {
     marginBottom: 8,
   },
+  menuHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
   menuName: {
     fontSize: 16,
     fontWeight: '700',
     color: '#000',
-    marginBottom: 4,
+    flex: 1,
   },
   menuDescription: {
     fontSize: 12,
@@ -440,7 +482,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    marginBottom: 4,
   },
   star: {
     fontSize: 14,
@@ -461,7 +502,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addButton: {
-    backgroundColor: '#B91C1C',
+    backgroundColor: '#A6171B',
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -470,14 +511,21 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     fontSize: 24,
-    color: '#FFF',
+    color: '#FFFFFF',
     fontWeight: '600',
   },
   favoriteButton: {
-    padding: 4,
+    backgroundColor: '#D9D9D9',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  favoriteIcon: {
-    fontSize: 24,
+  favoriteIconImage: {
+    width: 20,
+    height: 20,
+    tintColor: '#A6171B',
   },
   bottomNav: {
     position: 'absolute',
@@ -485,7 +533,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    backgroundColor: '#B91C1C',
+    backgroundColor: '#A6171B',
     paddingVertical: 12,
     paddingHorizontal: 32,
     justifyContent: 'space-around',
@@ -495,7 +543,8 @@ const styles = StyleSheet.create({
   navItem: {
     alignItems: 'center',
   },
-  navIcon: {
-    fontSize: 24,
+  navIconImage: {
+    width: 28,
+    height: 28,
   },
 });

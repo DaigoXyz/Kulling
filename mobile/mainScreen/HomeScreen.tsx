@@ -9,17 +9,19 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import axios from 'axios';
 
 interface MenuItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  rating: number;
-  category: string;
-  image?: string;
+  id_menu: number;
+  nama_menu: string;
+  deskripsi: string;
+  harga: number;
+  gambar?: string;
+  rating?: number;
+  category?: string;
 }
 
 export default function HomeScreen() {
@@ -27,45 +29,32 @@ export default function HomeScreen() {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // URL API - sesuaikan dengan URL backend Anda
+  const API_URL = 'http://10.170.73.197:3000/api/menu';
 
   useEffect(() => {
-    // Simulasi data - nanti ganti dengan API call
-    const dummyData: MenuItem[] = [
-      {
-        id: 1,
-        name: 'Burger',
-        description: 'lorem ipsum dolor sit',
-        price: 12000,
-        rating: 4.5,
-        category: 'Breakfast',
-      },
-      {
-        id: 2,
-        name: 'Burger',
-        description: 'lorem ipsum dolor sit',
-        price: 12000,
-        rating: 4.5,
-        category: 'Breakfast',
-      },
-      {
-        id: 3,
-        name: 'Burger',
-        description: 'lorem ipsum dolor sit',
-        price: 12000,
-        rating: 4.5,
-        category: 'Breakfast',
-      },
-      {
-        id: 4,
-        name: 'Burger',
-        description: 'lorem ipsum dolor sit',
-        price: 12000,
-        rating: 4.5,
-        category: 'Breakfast',
-      },
-    ];
-    setMenuItems(dummyData);
+    fetchMenuItems();
   }, []);
+
+  const fetchMenuItems = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(API_URL);
+      // Tambahkan rating dummy untuk setiap menu
+      const menuWithRating = response.data.map((item: MenuItem) => ({
+        ...item,
+        rating: item.rating || 4.5, // Default rating 4.5 jika tidak ada
+      }));
+      setMenuItems(menuWithRating);
+    } catch (error) {
+      console.error('Error fetching menu:', error);
+      Alert.alert('Error', 'Gagal mengambil data menu dari server');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categories = ['Breakfast', 'Sides', 'Dessert', 'Drink'];
 
@@ -75,32 +64,51 @@ export default function HomeScreen() {
     );
   };
 
+  // Filter menu berdasarkan search query
+  const filteredMenuItems = menuItems.filter(item =>
+    item.nama_menu.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const renderMenuItem = ({ item }: { item: MenuItem }) => (
     <View style={styles.menuCard}>
       <View style={styles.menuImageContainer}>
-        <Text style={styles.burgerEmoji}>🍔</Text>
+        {item.gambar ? (
+          <Image
+            source={{ uri: `http://10.170.73.197:3000${item.gambar}` }}
+            style={styles.menuImage}
+            resizeMode="cover"
+          />
+        ) : (
+          <Text style={styles.burgerEmoji}>🍔</Text>
+        )}
       </View>
 
       <View style={styles.menuInfo}>
         <View style={styles.menuHeader}>
-          <Text style={styles.menuName}>{item.name}</Text>
-          <View style={styles.ratingContainer}>
-            <Text style={styles.star}>⭐</Text>
-            <Text style={styles.rating}>{item.rating}</Text>
-          </View>
+          <Text style={styles.menuName} numberOfLines={1}>
+            {item.nama_menu}
+          </Text>
+          {item.rating && (
+            <View style={styles.ratingContainer}>
+              <Text style={styles.star}>⭐</Text>
+              <Text style={styles.rating}>{item.rating}</Text>
+            </View>
+          )}
         </View>
 
-        <Text style={styles.menuDescription}>{item.description}</Text>
-        <Text style={styles.price}>Rp {item.price.toLocaleString('id-ID')}</Text>
+        <Text style={styles.menuDescription} numberOfLines={2}>
+          {item.deskripsi}
+        </Text>
+        <Text style={styles.price}>Rp {item.harga.toLocaleString('id-ID')}</Text>
       </View>
 
       <View style={styles.menuActions}>
         <TouchableOpacity
           style={styles.favoriteButton}
-          onPress={() => toggleFavorite(item.id)}
+          onPress={() => toggleFavorite(item.id_menu)}
         >
           <Image
-            source={require('./assets/favorit.png')}
+            source={require('../assets/favorit.png')}
             style={styles.favoriteIconImage}
             resizeMode="contain"
           />
@@ -118,7 +126,7 @@ export default function HomeScreen() {
       {/* Header with Background Image */}
       <View style={styles.headerContainer}>
         <Image
-          source={require('./assets/background.png')}
+          source={require('../assets/background.png')}
           style={styles.headerBackground}
           resizeMode="cover"
         />
@@ -126,7 +134,7 @@ export default function HomeScreen() {
           <View style={styles.headerTop}>
             <View style={styles.headerLeft}>
               <Image
-                source={require('./assets/logo1.png')}
+                source={require('../assets/logo1.png')}
                 style={styles.logo}
                 resizeMode="contain"
               />
@@ -135,21 +143,21 @@ export default function HomeScreen() {
             <View style={styles.headerRight}>
               <TouchableOpacity style={styles.iconButton}>
                 <Image
-                  source={require('./assets/lonceng.png')}
+                  source={require('../assets/lonceng.png')}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
                 <Image
-                  source={require('./assets/keranjang.png')}
+                  source={require('../assets/keranjang.png')}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
                 <Image
-                  source={require('./assets/logout.png')}
+                  source={require('../assets/logout.png')}
                   style={styles.iconImage}
                   resizeMode="contain"
                 />
@@ -169,7 +177,7 @@ export default function HomeScreen() {
               />
               <TouchableOpacity style={styles.searchIconButton}>
                 <Image
-                  source={require('./assets/search.png')}
+                  source={require('../assets/search.png')}
                   style={styles.searchIconImage}
                   resizeMode="contain"
                 />
@@ -187,7 +195,7 @@ export default function HomeScreen() {
         <View style={styles.voucherBanner}>
           <View style={styles.voucherWrapper}>
             <Image
-              source={require('./assets/vocher.png')}
+              source={require('../assets/vocher.png')}
               style={styles.voucherPicture}
               resizeMode="cover"
             />
@@ -224,44 +232,58 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Menu Grid */}
-        <FlatList
-          data={menuItems}
-          renderItem={renderMenuItem}
-          keyExtractor={(item) => item.id.toString()}
-          numColumns={2}
-          scrollEnabled={false}
-          columnWrapperStyle={styles.menuRow}
-          contentContainerStyle={styles.menuGrid}
-        />
+        {/* Loading Indicator */}
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#B91C1C" />
+            <Text style={styles.loadingText}>Memuat menu...</Text>
+          </View>
+        ) : filteredMenuItems.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              {searchQuery ? 'Menu tidak ditemukan' : 'Belum ada menu tersedia'}
+            </Text>
+          </View>
+        ) : (
+          /* Menu Grid */
+          <FlatList
+            data={filteredMenuItems}
+            renderItem={renderMenuItem}
+            keyExtractor={(item) => item.id_menu.toString()}
+            numColumns={2}
+            scrollEnabled={false}
+            columnWrapperStyle={styles.menuRow}
+            contentContainerStyle={styles.menuGrid}
+          />
+        )}
       </ScrollView>
 
       {/* Bottom Navigation */}
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
           <Image
-            source={require('./assets/homee.png')}
+            source={require('../assets/homee.png')}
             style={styles.navIconImage}
             resizeMode="contain"
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Image
-            source={require('./assets/favorit.png')}
+            source={require('../assets/favorit.png')}
             style={styles.navIconImage}
             resizeMode="contain"
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Image
-            source={require('./assets/history.png')}
+            source={require('../assets/history.png')}
             style={styles.navIconImage}
             resizeMode="contain"
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
           <Image
-            source={require('./assets/account.png')}
+            source={require('../assets/account.png')}
             style={styles.navIconImage}
             resizeMode="contain"
           />
@@ -454,6 +476,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
+    overflow: 'hidden',
+  },
+  menuImage: {
+    width: '100%',
+    height: '100%',
   },
   burgerEmoji: {
     fontSize: 50,
@@ -526,6 +553,24 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     tintColor: '#A6171B',
+  },
+  loadingContainer: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 14,
+    color: '#666',
+  },
+  emptyContainer: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
   },
   bottomNav: {
     position: 'absolute',

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import SplashScreen from './SplashScreen';
-import LoginScreen from './LoginScreen';
-import RegisterScreen from './RegisterScreen';
-import HomeScreen from './HomeScreen'; // Import HomeScreen
+import SplashScreen from './authScreen/SplashScreen';
+import LoginScreen from './authScreen/LoginScreen';
+import RegisterScreen from './authScreen/RegisterScreen';
+import HomeScreen from './mainScreen/HomeScreen'; // Import HomeScreen
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);

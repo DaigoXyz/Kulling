@@ -8,7 +8,7 @@ export default function SplashScreen() {
     <View style={styles.container}>
       <View style={styles.truckContainer}>
         <Image 
-     source={require('./assets/logo.png')} 
+     source={require('../assets/logo.png')} 
      style={{ width: 500, height: 400 }}
      resizeMode="contain"
    />

@@ -33,7 +33,7 @@ export default function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
     try {
       setLoading(true);
 
-      const response = await fetch('http://10.170.73.197:3000/api/login', {
+      const response = await fetch('http://10.250.92.124:3000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -84,7 +84,7 @@ export default function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
             <Text style={styles.label}>Password:</Text>
             <View style={styles.passwordContainer}>
               <TextInput
-                style={styles.passwordInput}
+                style={[styles.passwordInput, { color: '#000' }]}
                 value={password}
                 onChangeText={setPassword}
                 placeholder="Enter password"

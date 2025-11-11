@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TextInput,
   Image,
@@ -12,6 +11,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import axios from 'axios';
 
 interface MenuItem {
@@ -24,7 +24,11 @@ interface MenuItem {
   category?: string;
 }
 
-export default function HomeScreen() {
+interface HomeScreen {
+  user: any;
+}
+
+export default function HomeScreen({ user, navigation }: any) {
   const [selectedCategory, setSelectedCategory] = useState('Breakfast');
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -32,7 +36,7 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
 
   // URL API - sesuaikan dengan URL backend Anda
-  const API_URL = 'http://10.170.73.197:3000/api/menu';
+  const API_URL = 'http://10.250.92.124:3000/api/menu';
 
   useEffect(() => {
     fetchMenuItems();
@@ -74,7 +78,7 @@ export default function HomeScreen() {
       <View style={styles.menuImageContainer}>
         {item.gambar ? (
           <Image
-            source={{ uri: `http://10.170.73.197:3000${item.gambar}` }}
+            source={{ uri: `http://10.250.92.124:3000${item.gambar}` }}
             style={styles.menuImage}
             resizeMode="cover"
           />
@@ -148,7 +152,10 @@ export default function HomeScreen() {
                   resizeMode="contain"
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton}>
+               <TouchableOpacity 
+                style={styles.iconButton}
+                onPress={() => navigation.navigate('Cart')}
+              >
                 <Image
                   source={require('../assets/keranjang.png')}
                   style={styles.iconImage}
@@ -259,6 +266,8 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* Bottom Navigation */}
+      <SafeAreaView edges={['bottom']} style={styles.safeBottomArea}>
+        
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
           <Image
@@ -267,14 +276,21 @@ export default function HomeScreen() {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity 
+          style={styles.navItem}
+          onPress={() => navigation.navigate('Favorite')} //  navigasi ke form Favorite
+        >
           <Image
             source={require('../assets/favorit.png')}
             style={styles.navIconImage}
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+
+        <TouchableOpacity 
+          style={styles.navItem}
+          onPress={() => navigation.navigate('History')} //  navigasi ke form History
+        >
           <Image
             source={require('../assets/history.png')}
             style={styles.navIconImage}
@@ -289,6 +305,7 @@ export default function HomeScreen() {
           />
         </TouchableOpacity>
       </View>
+    </SafeAreaView>
     </SafeAreaView>
   );
 }
@@ -572,11 +589,13 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
   },
-  bottomNav: {
+  safeBottomArea: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
+  },
+  bottomNav: {
     flexDirection: 'row',
     backgroundColor: '#A6171B',
     paddingVertical: 12,
@@ -584,6 +603,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
+    paddingBottom: 10,
   },
   navItem: {
     alignItems: 'center',
@@ -592,4 +612,5 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
   },
+  
 });

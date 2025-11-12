@@ -36,7 +36,7 @@ export default function HomeScreen({ user, navigation }: any) {
   const [loading, setLoading] = useState(false);
 
   // URL API - sesuaikan dengan URL backend Anda
-  const API_URL = 'http://10.250.92.124:3000/api/menu';
+  const API_URL = 'http://10.250.92.88:3000/api/menu';
 
   useEffect(() => {
     fetchMenuItems();
@@ -68,6 +68,22 @@ export default function HomeScreen({ user, navigation }: any) {
     );
   };
 
+  const handleAddToCart = (item: MenuItem) => {
+    // Navigasi ke ProductDetail dengan data produk
+    navigation.navigate('AddOrder', {
+      product: {
+        id_menu: item.id_menu,
+        nama_menu: item.nama_menu,
+        deskripsi: item.deskripsi,
+        harga: item.harga,
+        gambar: item.gambar,
+        rating: item.rating,
+        ingredients: 'Daging Ayam, cabai, selada, saus cabai, tomat, dll',
+        estimatedTime: '10 -15 Mins',
+      }
+    });
+  };
+
   // Filter menu berdasarkan search query
   const filteredMenuItems = menuItems.filter(item =>
     item.nama_menu.toLowerCase().includes(searchQuery.toLowerCase())
@@ -78,7 +94,7 @@ export default function HomeScreen({ user, navigation }: any) {
       <View style={styles.menuImageContainer}>
         {item.gambar ? (
           <Image
-            source={{ uri: `http://10.250.92.124:3000${item.gambar}` }}
+            source={{ uri: `http://10.250.92.88:3000${item.gambar}` }}
             style={styles.menuImage}
             resizeMode="cover"
           />
@@ -118,7 +134,10 @@ export default function HomeScreen({ user, navigation }: any) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => handleAddToCart(item)}
+        >
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -278,7 +297,7 @@ export default function HomeScreen({ user, navigation }: any) {
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
-          onPress={() => navigation.navigate('Favorite')} //  navigasi ke form Favorite
+          onPress={() => navigation.navigate('Favorite')}
         >
           <Image
             source={require('../assets/favorit.png')}
@@ -289,7 +308,7 @@ export default function HomeScreen({ user, navigation }: any) {
 
         <TouchableOpacity 
           style={styles.navItem}
-          onPress={() => navigation.navigate('History')} //  navigasi ke form History
+          onPress={() => navigation.navigate('History')}
         >
           <Image
             source={require('../assets/history.png')}

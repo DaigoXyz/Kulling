@@ -33,7 +33,7 @@ export default function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
     try {
       setLoading(true);
 
-      const response = await fetch('http://10.250.92.124:3000/api/login', {
+      const response = await fetch('http://10.250.92.88:3000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

@@ -23,6 +23,8 @@ interface Order {
   status: 'terkirim' | 'menunggu' | 'sedang_dimasak';
   statusLabel: string;
   statusColor: string;
+  statusBgColor: string;
+  statusIcon: any;
 }
 
 interface Stats {
@@ -43,7 +45,7 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
   const [loading, setLoading] = useState(false);
 
   // URL API - sesuaikan dengan URL backend Anda
-  const API_URL = 'http://10.250.92.124:3000/api/orders';
+  const API_URL = 'http://192.168.43.211:3000/api/orders';
 
   useEffect(() => {
     fetchOrders();
@@ -55,7 +57,7 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
       // Uncomment ketika API sudah siap
       // const response = await axios.get(API_URL);
       // setOrders(response.data);
-      
+
       // Data dummy untuk testing
       const dummyOrders: Order[] = [
         {
@@ -65,7 +67,9 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
           totalPrice: 135000,
           status: 'terkirim',
           statusLabel: 'Terkirim',
-          statusColor: '#10B981',
+          statusColor: '#00751E',
+          statusBgColor: '#CEFBDA',
+          statusIcon: require('../assets/terkirim.png'),
         },
         {
           id: '2',
@@ -74,7 +78,9 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
           totalPrice: 135000,
           status: 'menunggu',
           statusLabel: 'Menunggu',
-          statusColor: '#EF4444',
+          statusColor: '#CA6539',
+          statusBgColor: '#FFDBCB',
+          statusIcon: require('../assets/menunggu.png'),
         },
         {
           id: '3',
@@ -83,7 +89,9 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
           totalPrice: 135000,
           status: 'sedang_dimasak',
           statusLabel: 'Sedang di masak',
-          statusColor: '#F59E0B',
+          statusColor: '#BE7200',
+          statusBgColor: '#FFE5A7',
+          statusIcon: require('../assets/pesanan.png'),
         },
       ];
       setOrders(dummyOrders);
@@ -150,7 +158,7 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
         </View>
       </View>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
@@ -159,25 +167,25 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
         <View style={styles.statsContainer}>
           {/* Total Pesanan Card */}
           <View style={styles.statsCard}>
-            <View style={styles.statsIconContainer}>
-              <Text style={styles.statsIcon}>📦</Text>
-            </View>
-            <View style={styles.statsGrowth}>
-              <Text style={styles.statsGrowthText}>{stats.orderGrowth}</Text>
-            </View>
+            <Image
+              source={require('../assets/bahan.png')}
+              style={styles.statsIconImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.statsGrowthText}>{stats.orderGrowth}</Text>
             <Text style={styles.statsValue}>{stats.totalOrders}</Text>
             <Text style={styles.statsLabel}>Total Pesanan</Text>
           </View>
 
           {/* Pendapatan Card */}
           <View style={styles.statsCard}>
-            <View style={styles.statsIconContainer}>
-              <Text style={styles.statsIcon}>💰</Text>
-            </View>
-            <View style={styles.statsGrowth}>
-              <Text style={styles.statsGrowthText}>{stats.revenueGrowth}</Text>
-            </View>
-            <Text style={styles.statsValue}>{formatRevenue(stats.totalRevenue)}</Text>
+            <Image
+              source={require('../assets/dollar.png')}
+              style={styles.statsIconImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.statsGrowthText}>{stats.revenueGrowth}</Text>
+            <Text style={styles.statsValueRevenue}>{formatRevenue(stats.totalRevenue)}</Text>
             <Text style={styles.statsLabel}>Pendapatan</Text>
           </View>
         </View>
@@ -206,19 +214,28 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
                   <View style={styles.orderHeader}>
                     <View style={styles.orderTitleContainer}>
                       <Text style={styles.orderTitle}>Darin</Text>
-                      <View style={[styles.statusBadge, { backgroundColor: order.statusColor }]}>
-                        <Text style={styles.statusText}>{order.statusLabel}</Text>
+                      <View style={[styles.statusBadge, { backgroundColor: order.statusBgColor }]}>
+                        <Image
+                          source={order.statusIcon}
+                          style={styles.statusIcon}
+                          resizeMode="contain"
+                        />
+                        <Text style={[styles.statusText, { color: order.statusColor }]}>{order.statusLabel}</Text>
                       </View>
                     </View>
                     <TouchableOpacity style={styles.arrowButton}>
-                      <Text style={styles.arrowIcon}>›</Text>
+                      <Image
+                        source={require('../assets/panah.png')}
+                        style={styles.arrowIconImage}
+                        resizeMode="contain"
+                      />
                     </TouchableOpacity>
                   </View>
-                  
+
                   <Text style={styles.orderNumber}>
                     {order.orderNumber} {order.itemCount} Item
                   </Text>
-                  
+
                   <Text style={styles.orderPrice}>
                     {formatCurrency(order.totalPrice)}
                   </Text>
@@ -234,24 +251,27 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
         <View style={styles.bottomNav}>
           <TouchableOpacity style={styles.navItem}>
             <Image
-              source={require('../assets/homee.png')}
+              source={require('../assets/pesanan2.png')}
               style={styles.navIconImage}
               resizeMode="contain"
             />
+            <Text style={styles.navLabel}>Pesanan</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem}>
             <Image
-              source={require('../assets/history.png')}
+              source={require('../assets/history2.png')}
               style={styles.navIconImage}
               resizeMode="contain"
             />
+            <Text style={styles.navLabel}>History</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem}>
             <Image
-              source={require('../assets/account.png')}
+              source={require('../assets/bahan.png')}
               style={styles.navIconImage}
               resizeMode="contain"
             />
+            <Text style={styles.navLabel}>Bahan</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -336,52 +356,50 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  statsIconContainer: {
+  statsIconImage: {
     width: 48,
     height: 48,
-    backgroundColor: '#FEE2E2',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  statsIcon: {
-    fontSize: 24,
-  },
-  statsGrowth: {
+  statsGrowthText: {
     position: 'absolute',
     top: 16,
     right: 16,
-    backgroundColor: '#DCFCE7',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statsGrowthText: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '600',
-    color: '#16A34A',
+    color: '#000000',
+    fontFamily: 'Poppins',
   },
   statsValue: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#B91C1C',
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#9A282B',
     marginBottom: 4,
+    fontFamily: 'Poppins',
+  },
+  statsValueRevenue: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#982629',
+    marginBottom: 4,
+    fontFamily: 'Poppins',
   },
   statsLabel: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#666',
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#000000',
+    fontFamily: 'Poppins',
   },
   ordersSection: {
     paddingHorizontal: 16,
     paddingTop: 24,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 16,
+    fontWeight: '600',
     color: '#000',
     marginBottom: 16,
+    fontFamily: 'Poppins',
   },
   ordersList: {
     gap: 12,
@@ -415,16 +433,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
+    fontFamily: 'Poppins',
   },
   statusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
+    gap: 4,
+  },
+  statusIcon: {
+    width: 16,
+    height: 16,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: '600',
-    color: '#FFFFFF',
+    fontFamily: 'Poppins',
   },
   arrowButton: {
     width: 32,
@@ -432,20 +458,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  arrowIcon: {
-    fontSize: 28,
-    color: '#D1D5DB',
-    fontWeight: '300',
+  arrowIconImage: {
+    width: 24,
+    height: 24,
+    tintColor: '#818181',
   },
   orderNumber: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#000000',
     marginBottom: 8,
+    fontFamily: 'Poppins',
   },
   orderPrice: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#B91C1C',
+    fontWeight: '600',
+    color: '#982629',
+    fontFamily: 'Poppins',
   },
   loadingContainer: {
     padding: 40,
@@ -468,7 +497,7 @@ const styles = StyleSheet.create({
   },
   bottomNav: {
     flexDirection: 'row',
-    backgroundColor: '#A6171B',
+    backgroundColor: '#952326',
     paddingVertical: 12,
     paddingHorizontal: 32,
     justifyContent: 'space-around',
@@ -478,9 +507,17 @@ const styles = StyleSheet.create({
   },
   navItem: {
     alignItems: 'center',
+    gap: 4,
   },
   navIconImage: {
     width: 28,
     height: 28,
+    tintColor: '#FFFFFF',
+  },
+  navLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    fontFamily: 'Poppins',
   },
 });

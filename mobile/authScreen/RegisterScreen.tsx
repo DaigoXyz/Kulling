@@ -48,7 +48,7 @@ export default function RegisterScreen({ onRegister, onBackToLogin }: RegisterSc
     try {
       setLoading(true);
 
-      const response = await fetch('http://10.170.73.249:3000/api/register', {
+      const response = await fetch('http://192.168.43.211:3000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

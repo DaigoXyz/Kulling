@@ -8,43 +8,47 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    if (!username || !password) {
-      alert("Username dan password wajib diisi");
+  if (!username || !password) {
+    alert("Username dan password wajib diisi");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+    console.log("Response login:", data);
+
+    if (!response.ok) {
+      alert(data.message || "Login gagal");
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+    // Simpan token & data user
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
 
-      const data = await response.json();
-      console.log("Response login:", data);
-
-      if (!response.ok) {
-        alert(data.message || "Login gagal");
-        return;
-      }
-
-      // Cek role user
-      if (data.user.role !== "admin") {
-        alert("Hanya admin yang bisa login");
-        return;
-      }
-
-      // Simpan token biar bisa dipakai nanti
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-
-      alert("Login berhasil sebagai admin");
-      navigate("/Dashboard");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Tidak bisa terhubung ke server (Network Request Failed)");
+    // Arahkan berdasarkan role
+    if (data.user.role === "admin") {
+      alert("Login berhasil sebagai Admin");
+      navigate("/DashboardAdmin");
+    } else if (data.user.role === "dispatcher") {
+      alert("Login berhasil sebagai Dispatcher");
+      navigate("/Verifikasi");
+    } else {
+      alert("Hanya admin dan petugas yang bisa login");
+      return;
     }
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Tidak bisa terhubung ke server (Network Request Failed)");
+  }
+};
+
 
   return (
     <div className="h-screen w-screen flex font-[Arial]">

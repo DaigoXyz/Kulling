@@ -7,7 +7,7 @@ interface DbItem {
   iconWhite: string;
 }
 
-function Pesanan() {
+function AdminDashboard() {
   const navigate = useNavigate();
 
   const [dbItem] = useState<DbItem[]>([
@@ -24,7 +24,7 @@ function Pesanan() {
   const handleMenuClick = (itemName: string) => {
     setActive(itemName);
     const routeMap: Record<string, string> = {
-      "Dashboard": "/Dashboard",
+      "DashboardAdmin": "/DashboardAdmin",
       "Menu": "/Menu",
       "Pesanan": "/Pesanan",
       "Laporan": "/Laporan",
@@ -216,4 +216,4 @@ function Pesanan() {
   );
 }
 
-export default Pesanan;
+export default AdminDashboard;

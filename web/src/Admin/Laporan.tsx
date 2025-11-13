@@ -35,7 +35,7 @@ function AdminDashboard() {
         setActive(itemName);
 
         const routeMap: Record<string, string> = {
-        "Dashboard": "/Dashboard",
+        "DashboardAdmin": "/DashboardAdmin",
         "Menu": "/Menu",
         "Pesanan": "/Pesanan",
         "Laporan": "/Laporan",

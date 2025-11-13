@@ -17,7 +17,7 @@ interface Truck {
   mapSrc: string;
 }
 
-function LokasiTruck() {
+function AdminDashboard() {
   const navigate = useNavigate();
 
   const [dbItem] = useState<DbItem[]>([
@@ -33,7 +33,7 @@ function LokasiTruck() {
   const handleMenuClick = (itemName: string) => {
     setActive(itemName);
     const routeMap: Record<string, string> = {
-      "Dashboard": "/Dashboard",
+      "DashboardAdmin": "/DashboardAdmin",
       "Menu": "/Menu",
       "Pesanan": "/Pesanan",
       "Laporan": "/Laporan",
@@ -256,4 +256,4 @@ function LokasiTruck() {
   );
 }
 
-export default LokasiTruck;
+export default AdminDashboard;

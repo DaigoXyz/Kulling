@@ -97,7 +97,7 @@ export default function ProductDetailScreen({ navigation, route }: ProductDetail
           <Image
             source={
                 product.gambar
-                ? { uri: `http://10.250.92.32:3000${product.gambar}` }
+                ? { uri: `http://10.250.92.96:3000${product.gambar}` }
                 : require('../assets/burger.jpg')
             }
             style={styles.productImage}
@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
+    marginBottom: 30,
   },
   priceContainer: {
     flex: 1,

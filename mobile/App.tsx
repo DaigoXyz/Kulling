@@ -12,6 +12,11 @@ import Cart from './mainScreen/Cart';
 import FavoriteScreen from './mainScreen/Favorite';
 import HistoryScreen from './mainScreen/History';
 import AddOrder from './mainScreen/AddOrder';
+import ProfileScreen from './mainScreen/Profile';
+import OrderDetail from './mainScreen/orderDetail';
+import AccountSettingsScreen from './mainScreen/AccountSetting';
+import PromoScreen from './mainScreen/PromoScreen';
+import AlamatDetail from './mainScreen/AlamatDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,10 +84,25 @@ export default function App() {
                 {({ navigation }) => <HomeScreen user={user} navigation={navigation} />}
               </Stack.Screen>
 
+              <Stack.Screen name="OrderDetail" component={OrderDetail} />
               <Stack.Screen name="Cart" component={Cart} />
               <Stack.Screen name="Favorite" component={FavoriteScreen} />
               <Stack.Screen name="History" component={HistoryScreen} />
+              <Stack.Screen name="Profile" component={ProfileScreen} />
+              <Stack.Screen name="AccountSettingsScreen" component={AccountSettingsScreen} />
               
+              <Stack.Screen 
+                name="PromoScreen" 
+                component={PromoScreen}
+                options={{ headerShown: false }}
+              />
+
+              <Stack.Screen 
+                name="AlamatDetail" 
+                component={AlamatDetail}
+                options={{ headerShown: false }}
+              />
+
               <Stack.Screen
                 name="AddOrder"
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

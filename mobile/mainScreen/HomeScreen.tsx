@@ -35,8 +35,7 @@ export default function HomeScreen({ user, navigation }: any) {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // URL API - sesuaikan dengan URL backend Anda
-  const API_URL = 'http://10.250.92.88:3000/api/menu';
+  const API_URL = 'http://10.250.92.6:3000/api/menu';
 
   useEffect(() => {
     fetchMenuItems();
@@ -94,7 +93,7 @@ export default function HomeScreen({ user, navigation }: any) {
       <View style={styles.menuImageContainer}>
         {item.gambar ? (
           <Image
-            source={{ uri: `http://10.250.92.88:3000${item.gambar}` }}
+            source={{ uri: `http://10.250.92.6:3000${item.gambar}` }}
             style={styles.menuImage}
             resizeMode="cover"
           />
@@ -221,7 +220,7 @@ export default function HomeScreen({ user, navigation }: any) {
         <View style={styles.voucherBanner}>
           <View style={styles.voucherWrapper}>
             <Image
-              source={require('../assets/vocher.png')}
+              source={require('../assets/promo1.png')}
               style={styles.voucherPicture}
               resizeMode="cover"
             />
@@ -316,7 +315,10 @@ export default function HomeScreen({ user, navigation }: any) {
             resizeMode="contain"
           />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity 
+          style={styles.navItem}
+          onPress={() => navigation.navigate('Profile')}
+        >
           <Image
             source={require('../assets/account.png')}
             style={styles.navIconImage}

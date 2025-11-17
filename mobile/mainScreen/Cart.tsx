@@ -100,8 +100,20 @@ export default function CartScreen({ navigation }: CartScreenProps) {
   const ppn = 1000;
   const totalBiaya = subtotal + ppn;
 
+  // Update handleCheckout untuk navigasi ke orderDetail
   const handleCheckout = () => {
-    Alert.alert('Checkout', 'Proses pembayaran akan segera dimulai');
+    if (cartItems.length === 0) {
+      Alert.alert('Keranjang Kosong', 'Silakan tambahkan item terlebih dahulu');
+      return;0
+    }
+    
+    // Navigasi ke orderDetail dengan membawa data cartItems
+    navigation.navigate('OrderDetail', {
+      cartItems: cartItems,
+      subtotal: subtotal,
+      ppn: ppn,
+      totalBiaya: totalBiaya,
+    });
   };
 
   return (

@@ -12,6 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { House, ShoppingBasket, Heart, Search, Bell, LogOut, UserRound, ClockFading } from "lucide-react-native";
 import axios from 'axios';
 
 interface MenuItem {
@@ -35,7 +36,7 @@ export default function HomeScreen({ user, navigation }: any) {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_URL = 'http://10.250.92.6:3000/api/menu';
+  const API_URL = 'http://192.168.137.1:3000/api/menu';
 
   useEffect(() => {
     fetchMenuItems();
@@ -93,7 +94,7 @@ export default function HomeScreen({ user, navigation }: any) {
       <View style={styles.menuImageContainer}>
         {item.gambar ? (
           <Image
-            source={{ uri: `http://10.250.92.6:3000${item.gambar}` }}
+            source={{ uri: `http://192.168.137.1:3000${item.gambar}` }}
             style={styles.menuImage}
             resizeMode="cover"
           />
@@ -126,10 +127,10 @@ export default function HomeScreen({ user, navigation }: any) {
           style={styles.favoriteButton}
           onPress={() => toggleFavorite(item.id_menu)}
         >
-          <Image
-            source={require('../assets/favorit.png')}
-            style={styles.favoriteIconImage}
-            resizeMode="contain"
+          <Heart
+            size={20}
+            color={favorites.includes(item.id_menu) ? '#FF0000' : '#A6171B'}
+            strokeWidth={1.5}
           />
         </TouchableOpacity>
 
@@ -164,27 +165,27 @@ export default function HomeScreen({ user, navigation }: any) {
 
             <View style={styles.headerRight}>
               <TouchableOpacity style={styles.iconButton}>
-                <Image
-                  source={require('../assets/lonceng.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
+                <Bell
+                  size={22}
+                  color="#FFFFFF"
+                  strokeWidth={2}
                 />
               </TouchableOpacity>
                <TouchableOpacity 
                 style={styles.iconButton}
                 onPress={() => navigation.navigate('Cart')}
               >
-                <Image
-                  source={require('../assets/keranjang.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
+                <ShoppingBasket
+                  size={24}
+                  color="#FFFFFF"
+                  strokeWidth={2}
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
-                <Image
-                  source={require('../assets/logout.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
+                <LogOut
+                  size={22}
+                  color="#FFFFFF"
+                  strokeWidth={2}
                 />
               </TouchableOpacity>
             </View>
@@ -201,10 +202,10 @@ export default function HomeScreen({ user, navigation }: any) {
                 placeholderTextColor="#999"
               />
               <TouchableOpacity style={styles.searchIconButton}>
-                <Image
-                  source={require('../assets/search.png')}
-                  style={styles.searchIconImage}
-                  resizeMode="contain"
+                <Search
+                  size={20}
+                  color="#B91C1C"
+                  strokeWidth={3.5}
                 />
               </TouchableOpacity>
             </View>
@@ -288,20 +289,20 @@ export default function HomeScreen({ user, navigation }: any) {
         
       <View style={styles.bottomNav}>
         <TouchableOpacity style={styles.navItem}>
-          <Image
-            source={require('../assets/homee.png')}
-            style={styles.navIconImage}
-            resizeMode="contain"
+          <House
+            size={28}
+            color="#FFFFFF"
+            strokeWidth={2}
           />
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
           onPress={() => navigation.navigate('Favorite')}
         >
-          <Image
-            source={require('../assets/favorit.png')}
-            style={styles.navIconImage}
-            resizeMode="contain"
+          <Heart
+            size={28}
+            color="#FFFFFF"
+            strokeWidth={2}
           />
         </TouchableOpacity>
 
@@ -309,20 +310,20 @@ export default function HomeScreen({ user, navigation }: any) {
           style={styles.navItem}
           onPress={() => navigation.navigate('History')}
         >
-          <Image
-            source={require('../assets/history.png')}
-            style={styles.navIconImage}
-            resizeMode="contain"
+          <ClockFading
+            size={28}
+            color="#FFFFFF"
+            strokeWidth={2}
           />
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
           onPress={() => navigation.navigate('Profile')}
         >
-          <Image
-            source={require('../assets/account.png')}
-            style={styles.navIconImage}
-            resizeMode="contain"
+          <UserRound
+            size={28}
+            color="#FFFFFF"
+            strokeWidth={2}
           />
         </TouchableOpacity>
       </View>

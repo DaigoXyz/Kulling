@@ -6,48 +6,37 @@ import {
   TouchableOpacity, 
   ScrollView, 
   StyleSheet,
-  StatusBar,
-  Modal,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform
+  ImageBackground,
+  StatusBar
 } from 'react-native';
-import { ChevronLeft, MapPin, FileText, Minus, Plus, ChevronRight, BadgePercent, X } from 'lucide-react-native';
+import { ChevronLeft, MapPin, FileText, Minus, Plus, AlertCircle, ChevronRight, TicketPercent, TicketPercentIcon, SquarePercent, BadgePercent } from 'lucide-react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
+import LinearGradient from 'react-native-linear-gradient';
 
-export default function OrderDetail() {
+export default function OrderDetail({ navigation }: any) {
   const [quantity, setQuantity] = useState(2);
-  const [paymentMethod, setPaymentMethod] = useState('Tunai');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [noteText, setNoteText] = useState('');
-  const [savedNote, setSavedNote] = useState('');
   
   const pricePerItem = 12000;
   const shippingCost = 10000;
   const totalPrice = (pricePerItem * quantity) + shippingCost;
-
-  const handleSaveNote = () => {
-    setSavedNote(noteText);
-    setModalVisible(false);
-  };
-
-  const handleCancelNote = () => {
-    setNoteText(savedNote);
-    setModalVisible(false);
-  };
+  const [paymentMethod, setPaymentMethod] = useState('Tunai'); // Tambahan untuk payment method
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar barStyle="light-content" backgroundColor="#C4332A" />
       
       {/* Header */}
       <View style={styles.headerContainer}>
+        <Image source={require('../assets/background.png')} style={styles.headerBg} />
+
         <View style={styles.headerContent}>
-          <TouchableOpacity style={styles.backButton}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <ChevronLeft color="#FFF" size={26} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Kembali</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.headerTitle}>Kembali</Text>
         </View>
-      </View>
+       </View>
 
       <ScrollView 
         style={styles.content} 
@@ -61,7 +50,8 @@ export default function OrderDetail() {
         <View style={styles.card}>
           <View style={styles.cardHeader}>
             <Text style={styles.cardLabel}>Alamat Pengantaran</Text>
-            <TouchableOpacity style={styles.changeButton}>
+            <TouchableOpacity style={styles.changeButton}
+              onPress={() => navigation.navigate('AlamatDetail')}>
               <Text style={styles.changeButtonText}>Ganti Alamat</Text>
             </TouchableOpacity>
           </View>
@@ -98,20 +88,10 @@ export default function OrderDetail() {
             />
           </View>
 
-          <TouchableOpacity 
-            style={styles.noteButton}
-            onPress={() => setModalVisible(true)}
-          >
+          <TouchableOpacity style={styles.noteButton}>
             <FileText size={14} color="#000" />
             <Text style={styles.noteButtonText}>Catatan</Text>
           </TouchableOpacity>
-
-          {savedNote ? (
-            <View style={styles.savedNoteContainer}>
-              <Text style={styles.savedNoteLabel}>Catatan:</Text>
-              <Text style={styles.savedNoteText}>{savedNote}</Text>
-            </View>
-          ) : null}
 
           {/* Quantity Controls */}
           <View style={styles.quantityContainer}>
@@ -171,12 +151,33 @@ export default function OrderDetail() {
             <TouchableOpacity 
               style={styles.cashButton}
               onPress={() => {
+                // Cycle through payment methods
                 if (paymentMethod === 'Tunai') setPaymentMethod('QRIS');
                 else if (paymentMethod === 'QRIS') setPaymentMethod('GoPay');
                 else setPaymentMethod('Tunai');
               }}
             >
-              <Text style={styles.cashButtonText}>{paymentMethod}</Text>
+              {paymentMethod === 'QRIS' && (
+                <View style={styles.paymentMethodContent}>
+                  <Image 
+                    source={require('../assets/Logo_QRIS.png')}
+                    style={styles.paymentLogo}
+                    resizeMode="contain"
+                  />
+                </View>
+              )}
+              {paymentMethod === 'GoPay' && (
+                <View style={styles.paymentMethodContent}>
+                  <Image 
+                    source={require('../assets/Gopay_logo.png')}
+                    style={styles.paymentLogo}
+                    resizeMode="contain"
+                  />
+                </View>
+              )}
+              {paymentMethod === 'Tunai' && (
+                <Text style={styles.cashButtonText}>Tunai</Text>
+              )}
             </TouchableOpacity>
           </View>
           
@@ -188,27 +189,38 @@ export default function OrderDetail() {
           </View>
         </View>
 
-        {/* Promo Card */}
+        {/* Promo Card - Combined */}
         <View style={styles.promoCard}>
+          {/* Warning Section with Red Highlight */}
           <View style={styles.warningSection}>
+            {/* Background Gradient */}
+            <LinearGradient
+                colors={['#bd3438ff', 'rgba(185,28,28,0)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.warningGradient}
+            />
+
+            {/* Content */}
             <View style={styles.warningContent}>
-              <View style={styles.warningIconContainer}>
+                <View style={styles.warningIconContainer}>
                 <BadgePercent size={20} color="#FFF" />
-              </View>
+                </View>
 
-              <View style={styles.warningTextContainer}>
+                <View style={styles.warningTextContainer}>
                 <Text style={styles.warningText}>
-                  <Text style={styles.warningBold}>Diskon ongkir 11,5rb.{'\n'}</Text>
-                  <Text style={styles.warningSubtext}>Promo terbaik untukmu</Text>
+                    <Text style={styles.warningBold}>Diskon ongkir 11,5rb.{'\n'}</Text>
+                    <Text style={styles.warningSubtext}>Promo terbaik untukmu</Text>
                 </Text>
-              </View>
+                </View>
 
-              <TouchableOpacity style={styles.pakaiButton}>
+                <TouchableOpacity style={styles.pakaiButton}>
                 <Text style={styles.pakaiButtonText}>Pakai</Text>
-              </TouchableOpacity>
+                </TouchableOpacity>
             </View>
-          </View>
+            </View>
 
+          {/* Check Other Promos */}
           <TouchableOpacity style={styles.promoLinkContainer}>
             <Text style={styles.promoLinkText}>Cek promo lainnya</Text>
             <ChevronRight size={20} color="#A6171B" />
@@ -224,59 +236,7 @@ export default function OrderDetail() {
           <Text style={styles.orderButtonText}>Pesan dan antar sekarang</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Modal Catatan */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleCancelNote}
-      >
-        <KeyboardAvoidingView 
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.modalContainer}
-        >
-          <TouchableOpacity 
-            style={styles.modalOverlay}
-            activeOpacity={1}
-            onPress={handleCancelNote}
-          >
-            <View style={styles.modalContent} onStartShouldSetResponder={() => true}>
-              {/* Modal Header */}
-              <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Tambah catatan untuk pembelian</Text>
-                <TouchableOpacity 
-                  style={styles.closeButton}
-                  onPress={handleCancelNote}
-                >
-                  <X size={24} color="#000" />
-                </TouchableOpacity>
-              </View>
-
-              {/* Text Input */}
-              <TextInput
-                style={styles.textInput}
-                placeholder="Contoh: Extra pedas ya!"
-                placeholderTextColor="#999"
-                multiline
-                textAlignVertical="top"
-                value={noteText}
-                onChangeText={setNoteText}
-                autoFocus
-              />
-
-              {/* Save Button */}
-              <TouchableOpacity 
-                style={styles.saveButton}
-                onPress={handleSaveNote}
-              >
-                <Text style={styles.saveButtonText}>Simpan</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -287,22 +247,29 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: 80,
+    height: 80,              // 🔥 Tinggi ideal, tidak kepanjangan
     justifyContent: 'flex-end',
     backgroundColor: '#A6171B',
   },
-  headerContent: {
+
+    headerBg: {
+    ...StyleSheet.absoluteFill,
+    resizeMode: 'cover',       
+    width: '100%',
+    height: '100%',
+  },
+    headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingBottom: 10,
   },
-  backButton: {
+    backButton: {
     padding: 5,
     marginRight: 0,
     marginBottom: 5,
   },
-  headerTitle: {
+    headerTitle: {
     color: '#FFF',
     fontSize: 18,
     fontWeight: '600',
@@ -419,31 +386,12 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     gap: 4,
     alignSelf: 'flex-start',
-    marginBottom: 12,
+    marginBottom: -27,
   },
   noteButtonText: {
     fontSize: 11,
     color: '#000',
     fontWeight: '400',
-  },
-  savedNoteContainer: {
-    backgroundColor: '#FFF9E6',
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 12,
-    borderLeftWidth: 3,
-    borderLeftColor: '#A6171B',
-  },
-  savedNoteLabel: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#A6171B',
-    marginBottom: 4,
-  },
-  savedNoteText: {
-    fontSize: 12,
-    color: '#333',
-    lineHeight: 16,
   },
   quantityContainer: {
     flexDirection: 'row',
@@ -547,6 +495,15 @@ const styles = StyleSheet.create({
     color: '#A6171B',
     fontWeight: '400',
   },
+  paymentMethodContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  paymentLogo: {
+    width: 40,
+    height: 20,
+  },
   totalRow: {
     marginTop: 6,
     paddingTop: 10,
@@ -586,6 +543,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+  },
+    warningGradient: {
+    ...StyleSheet.absoluteFill,
   },
   warningIconContainer: {
     width: 20,
@@ -663,61 +623,6 @@ const styles = StyleSheet.create({
   orderButtonText: {
     color: '#FFF',
     fontSize: 15,
-    fontWeight: '700',
-  },
-  // Modal Styles
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 20,
-    paddingBottom: 40,
-    minHeight: 350,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#000',
-    flex: 1,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  textInput: {
-    backgroundColor: '#F8F8F8',
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 14,
-    color: '#000',
-    minHeight: 150,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
-  },
-  saveButton: {
-    backgroundColor: '#A6171B',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-  },
-  saveButtonText: {
-    color: '#FFF',
-    fontSize: 16,
     fontWeight: '700',
   },
 });

@@ -10,6 +10,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ChevronLeft, Pencil, Trash2 } from 'lucide-react-native';
 
 interface CartItem {
   id_menu: number;
@@ -128,7 +129,7 @@ export default function CartScreen({ navigation }: CartScreenProps) {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
         >
-            <Text style={styles.backIcon}>←</Text>
+            <ChevronLeft size={26} color="#FFFFFF" strokeWidth={2.5} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Kembali</Text>
     </ImageBackground>
@@ -183,20 +184,20 @@ export default function CartScreen({ navigation }: CartScreenProps) {
                   style={styles.editButton}
                   onPress={() => Alert.alert('Edit', 'Fitur edit item')}
                 >
-                  <Image
-                    source={require('../assets/edit.png')}
-                    style={styles.actionIcon}
-                    resizeMode="contain"
+                  <Pencil
+                    size={18}
+                    color="#A6171B"
+                    strokeWidth={3}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity 
                   style={styles.deleteButton}
                   onPress={() => removeItem(item.id_menu)}
                 >
-                  <Image
-                    source={require('../assets/delete.png')}
-                    style={styles.actionIcon}
-                    resizeMode="contain"
+                  <Trash2
+                    size={18}
+                    color="#A6171B"
+                    strokeWidth={3}
                   />
                 </TouchableOpacity>
               </View>

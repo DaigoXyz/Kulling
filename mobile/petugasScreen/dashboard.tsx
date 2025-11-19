@@ -10,6 +10,8 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Check, Clock, ChefHat, ChevronRight, Package, DollarSign,
+   ShoppingBasket, Bell, Archive } from "lucide-react-native";
 import axios from 'axios';
 
 interface DashboardPetugasProps {
@@ -60,40 +62,40 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
 
       // Data dummy untuk testing
       const dummyOrders: Order[] = [
-        {
-          id: '1',
-          orderNumber: '#ORD-001',
-          itemCount: 3,
-          totalPrice: 135000,
-          status: 'terkirim',
-          statusLabel: 'Terkirim',
-          statusColor: '#00751E',
-          statusBgColor: '#CEFBDA',
-          statusIcon: require('../assets/terkirim.png'),
-        },
-        {
-          id: '2',
-          orderNumber: '#ORD-001',
-          itemCount: 3,
-          totalPrice: 135000,
-          status: 'menunggu',
-          statusLabel: 'Menunggu',
-          statusColor: '#CA6539',
-          statusBgColor: '#FFDBCB',
-          statusIcon: require('../assets/menunggu.png'),
-        },
-        {
-          id: '3',
-          orderNumber: '#ORD-001',
-          itemCount: 3,
-          totalPrice: 135000,
-          status: 'sedang_dimasak',
-          statusLabel: 'Sedang di masak',
-          statusColor: '#BE7200',
-          statusBgColor: '#FFE5A7',
-          statusIcon: require('../assets/pesanan.png'),
-        },
-      ];
+      {
+        id: '1',
+        orderNumber: '#ORD-001',
+        itemCount: 3,
+        totalPrice: 135000,
+        status: 'terkirim',
+        statusLabel: 'Terkirim',
+        statusColor: '#00751E',
+        statusBgColor: '#CEFBDA',
+        statusIcon: "check",
+      },
+      {
+        id: '2',
+        orderNumber: '#ORD-001',
+        itemCount: 3,
+        totalPrice: 135000,
+        status: 'menunggu',
+        statusLabel: 'Menunggu',
+        statusColor: '#CA6539',
+        statusBgColor: '#FFDBCB',
+        statusIcon: "clock",
+      },
+      {
+        id: '3',
+        orderNumber: '#ORD-001',
+        itemCount: 3,
+        totalPrice: 135000,
+        status: 'sedang_dimasak',
+        statusLabel: 'Sedang di masak',
+        statusColor: '#BE7200',
+        statusBgColor: '#FFE5A7',
+        statusIcon: "ChefHat",
+      },
+    ];
       setOrders(dummyOrders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -140,17 +142,17 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
 
             <View style={styles.headerRight}>
               <TouchableOpacity style={styles.iconButton}>
-                <Image
-                  source={require('../assets/lonceng.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
+                <Bell
+                  size={24}
+                  color="#FFFFFF"
+                  strokeWidth={1.5}
                 />
               </TouchableOpacity>
               <TouchableOpacity style={styles.iconButton}>
-                <Image
-                  source={require('../assets/keranjang.png')}
-                  style={styles.iconImage}
-                  resizeMode="contain"
+                <ShoppingBasket
+                  size={24}
+                  color="#FFFFFF"
+                  strokeWidth={1.5}
                 />
               </TouchableOpacity>
             </View>
@@ -167,10 +169,10 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
         <View style={styles.statsContainer}>
           {/* Total Pesanan Card */}
           <View style={styles.statsCard}>
-            <Image
-              source={require('../assets/bahan.png')}
-              style={styles.statsIconImage}
-              resizeMode="contain"
+            <Package
+              size={48}
+              color="#9A282B"
+              strokeWidth={1.5}
             />
             <Text style={styles.statsGrowthText}>{stats.orderGrowth}</Text>
             <Text style={styles.statsValue}>{stats.totalOrders}</Text>
@@ -179,10 +181,10 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
 
           {/* Pendapatan Card */}
           <View style={styles.statsCard}>
-            <Image
-              source={require('../assets/dollar.png')}
-              style={styles.statsIconImage}
-              resizeMode="contain"
+            <DollarSign
+              size={48}
+              color="#982629"
+              strokeWidth={1.5}
             />
             <Text style={styles.statsGrowthText}>{stats.revenueGrowth}</Text>
             <Text style={styles.statsValueRevenue}>{formatRevenue(stats.totalRevenue)}</Text>
@@ -215,19 +217,26 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
                     <View style={styles.orderTitleContainer}>
                       <Text style={styles.orderTitle}>Darin</Text>
                       <View style={[styles.statusBadge, { backgroundColor: order.statusBgColor }]}>
-                        <Image
-                          source={order.statusIcon}
-                          style={styles.statusIcon}
-                          resizeMode="contain"
-                        />
-                        <Text style={[styles.statusText, { color: order.statusColor }]}>{order.statusLabel}</Text>
+                        {order.statusIcon === "check" && (
+                          <Check size={14} color={order.statusColor} strokeWidth={3} />
+                        )}
+                        {order.statusIcon === "clock" && (
+                          <Clock size={14} color={order.statusColor} strokeWidth={3} />
+                        )}
+                        {order.statusIcon === "ChefHat" && (
+                          <ChefHat size={14} color={order.statusColor} strokeWidth={3} />
+                        )}
+
+                        <Text style={[styles.statusText, { color: order.statusColor }]}>
+                          {order.statusLabel}
+                        </Text>
                       </View>
                     </View>
                     <TouchableOpacity style={styles.arrowButton}>
-                      <Image
-                        source={require('../assets/panah.png')}
-                        style={styles.arrowIconImage}
-                        resizeMode="contain"
+                      <ChevronRight
+                        size={24}
+                        color="#818181"
+                        strokeWidth={3}
                       />
                     </TouchableOpacity>
                   </View>
@@ -250,26 +259,26 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
       <SafeAreaView edges={['bottom']} style={styles.safeBottomArea}>
         <View style={styles.bottomNav}>
           <TouchableOpacity style={styles.navItem}>
-            <Image
-              source={require('../assets/pesanan2.png')}
-              style={styles.navIconImage}
-              resizeMode="contain"
+            <ChefHat
+              size={28}
+              color="#FFFFFF"
+              strokeWidth={1.5}
             />
             <Text style={styles.navLabel}>Pesanan</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem}>
-            <Image
-              source={require('../assets/history2.png')}
-              style={styles.navIconImage}
-              resizeMode="contain"
+            <Archive
+              size={28}
+              color="#FFFFFF"
+              strokeWidth={1.5}
             />
             <Text style={styles.navLabel}>History</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem}>
-            <Image
-              source={require('../assets/bahan.png')}
-              style={styles.navIconImage}
-              resizeMode="contain"
+            <Package
+              size={28}
+              color="#FFFFFF"
+              strokeWidth={1.5}
             />
             <Text style={styles.navLabel}>Bahan</Text>
           </TouchableOpacity>

@@ -12,6 +12,8 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import axios from 'axios';
+import { API_REGISTER, BASE_URL } from '../config/api';
 
 interface RegisterScreenProps {
   onRegister: () => void;
@@ -48,7 +50,7 @@ export default function RegisterScreen({ onRegister, onBackToLogin }: RegisterSc
     try {
       setLoading(true);
 
-      const response = await fetch('http://192.168.43.211:3000/api/register', {
+      const response = await fetch(API_REGISTER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

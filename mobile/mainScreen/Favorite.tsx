@@ -1,3 +1,4 @@
+import { ChevronLeft, Heart } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
   View,
@@ -80,7 +81,11 @@ export default function FavoriteScreen({ navigation }: FavoriteScreenProps) {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <ChevronLeft 
+            size={28}
+            color="#FFFFFF"
+            style={{ marginRight: -5, marginTop: 2 }}   // ini valid, karena ViewStyle
+          />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Kembali</Text>
       </ImageBackground>
@@ -132,7 +137,11 @@ export default function FavoriteScreen({ navigation }: FavoriteScreenProps) {
                 style={styles.favoriteButton}
                 onPress={() => removeFavorite(item.id_menu)}
               >
-                <Text style={styles.heartIcon}>❤️</Text>
+                <Heart 
+                  size={28}
+                  color="#FF0007"
+                  fill="#FF0007"     // ❤️ terisi (solid)
+                />
               </TouchableOpacity>
             </View>
           ))

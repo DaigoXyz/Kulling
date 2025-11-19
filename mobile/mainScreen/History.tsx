@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ChevronLeft } from 'lucide-react-native';
 
 interface HistoryItem {
   id_order: number;
@@ -216,7 +217,11 @@ export default function HistoryScreen({ navigation }: HistoryScreenProps) {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <ChevronLeft 
+            size={28}
+            color="#A6171B"
+            style={{ marginRight: -5, marginTop: 3 }}   // ini valid, karena ViewStyle
+          />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Aktivitas</Text>
       </View>

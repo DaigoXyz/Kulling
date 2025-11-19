@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Check, Clock, ChefHat, ChevronRight, Package, DollarSign,
    ShoppingBasket, Bell, Archive } from "lucide-react-native";
 import axios from 'axios';
+import { API_ORDERS, BASE_URL } from '../config/api';
 
 interface DashboardPetugasProps {
   user: any;
@@ -46,9 +47,6 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
   });
   const [loading, setLoading] = useState(false);
 
-  // URL API - sesuaikan dengan URL backend Anda
-  const API_URL = 'http://192.168.43.211:3000/api/orders';
-
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -57,7 +55,7 @@ export default function DashboardPetugasScreen({ user }: DashboardPetugasProps) 
     setLoading(true);
     try {
       // Uncomment ketika API sudah siap
-      // const response = await axios.get(API_URL);
+      // const response = await axios.get(API_ORDERS);
       // setOrders(response.data);
 
       // Data dummy untuk testing

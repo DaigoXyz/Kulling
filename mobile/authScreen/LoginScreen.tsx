@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_LOGIN, BASE_URL } from "../config/api";
 
 interface LoginScreenProps {
   onLogin: (userData: any) => void;
@@ -33,7 +34,7 @@ export default function LoginScreen({ onLogin, onSignUp }: LoginScreenProps) {
     try {
       setLoading(true);
 
-      const response = await fetch('http://192.168.137.1:3000/api/login', {
+      const response = await fetch(API_LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

@@ -12,8 +12,9 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
-import { House, ShoppingBasket, Heart, Search, Bell, LogOut, UserRound, ClockFading } from "lucide-react-native";
+import { House, ShoppingBasket, Heart, Search, Bell, LogOut, UserRound, ClockFading, ClipboardClock } from "lucide-react-native";
 import axios from 'axios';
+import { API_MENU, BASE_URL } from "../config/api";
 
 interface MenuItem {
   id_menu: number;
@@ -36,8 +37,6 @@ export default function HomeScreen({ user, navigation }: any) {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const API_URL = 'http://192.168.137.1:3000/api/menu';
-
   useEffect(() => {
     fetchMenuItems();
   }, []);
@@ -45,8 +44,7 @@ export default function HomeScreen({ user, navigation }: any) {
   const fetchMenuItems = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(API_URL);
-      // Tambahkan rating dummy untuk setiap menu
+      const response = await axios.get(API_MENU);
       const menuWithRating = response.data.map((item: MenuItem) => ({
         ...item,
         rating: item.rating || 4.5, // Default rating 4.5 jika tidak ada
@@ -94,7 +92,7 @@ export default function HomeScreen({ user, navigation }: any) {
       <View style={styles.menuImageContainer}>
         {item.gambar ? (
           <Image
-            source={{ uri: `http://192.168.137.1:3000${item.gambar}` }}
+            source={{ uri: `${BASE_URL}${item.gambar}` }}
             style={styles.menuImage}
             resizeMode="cover"
           />
@@ -294,6 +292,7 @@ export default function HomeScreen({ user, navigation }: any) {
             color="#FFFFFF"
             strokeWidth={2}
           />
+          <Text style={styles.navText}>Beranda</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
@@ -304,17 +303,19 @@ export default function HomeScreen({ user, navigation }: any) {
             color="#FFFFFF"
             strokeWidth={2}
           />
+          <Text style={styles.navText}>Favorit</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.navItem}
           onPress={() => navigation.navigate('History')}
         >
-          <ClockFading
+          <ClipboardClock
             size={28}
             color="#FFFFFF"
             strokeWidth={2}
           />
+          <Text style={styles.navText}>Aktivitas</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
@@ -325,6 +326,7 @@ export default function HomeScreen({ user, navigation }: any) {
             color="#FFFFFF"
             strokeWidth={2}
           />
+          <Text style={styles.navText}>Profile</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -613,9 +615,10 @@ const styles = StyleSheet.create({
   },
   safeBottomArea: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 20,         // <-- kasih jarak biar MELAYANG
     left: 0,
     right: 0,
+    alignItems: 'center', // biar center
   },
   bottomNav: {
     flexDirection: 'row',
@@ -623,12 +626,23 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     justifyContent: 'space-around',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingBottom: 10,
+
+    width: '90%',
+    borderRadius: 40,     
+    elevation: 10,         
+    shadowColor: '#000',   
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
   },
   navItem: {
     alignItems: 'center',
+  },
+  navText: {
+    marginTop: 4,       // jarak dengan icon
+    fontSize: 12,
+    color: '#fff',
+    fontWeight: '500',
   },
   navIconImage: {
     width: 28,

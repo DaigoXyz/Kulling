@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ChevronLeft, Heart } from 'lucide-react-native';
 
 interface ProductDetailProps {
   navigation: any;
@@ -76,14 +77,32 @@ export default function ProductDetailScreen({ navigation, route }: ProductDetail
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>←</Text>
+          <View style={{
+            backgroundColor: '#F8F8FF',
+            padding: 8,
+            borderRadius: 12, // kotak rounded
+          }}>
+            <ChevronLeft 
+              size={24}
+              color="#A6171B"
+            />
+          </View>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.favoriteButton}
-          onPress={toggleFavorite}
-        >
-          <Text style={styles.favoriteIcon}>{isFavorite ? '❤️' : '♡'}</Text>
+        <TouchableOpacity onPress={toggleFavorite}>
+          {isFavorite ? (
+            <Heart 
+              size={28}
+              color="#FF0007"
+              fill="#FF0007"     // ❤️ terisi (solid)
+            />
+          ) : (
+            <Heart 
+              size={28}
+              color="#A6171B"     // ♡ outline
+              fill="none"
+            />
+          )}
         </TouchableOpacity>
       </View>
 

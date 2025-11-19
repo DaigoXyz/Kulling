@@ -7,7 +7,7 @@ import {
   StatusBar,
   Alert,
 } from 'react-native';
-import { LogOut, Trash2 } from 'lucide-react-native';
+import { LogOut, Trash2, ChevronLeft } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -117,7 +117,7 @@ const AccountSettingsScreen = ({ navigation }: any) => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>‹</Text>
+          <ChevronLeft color="#B91C1C" size={28} style={{ marginRight: 2 }} />
           <Text style={styles.backText}>Pengaturan Akun</Text>
         </TouchableOpacity>
       </View>

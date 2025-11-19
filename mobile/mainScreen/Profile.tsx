@@ -12,7 +12,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import { User, ClipboardList, Gift, Settings, Trash2 } from 'lucide-react-native';
+import { User, ClipboardList, Gift, Settings, Trash2, ChevronLeft } from 'lucide-react-native';
 import { launchImageLibrary, launchCamera, ImagePickerResponse } from 'react-native-image-picker';
 import Svg, { Path } from 'react-native-svg';
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -156,8 +156,8 @@ const ProfileScreen = () => {
 
             {/* Header Content */}
             <View style={styles.headerContent}>
-              <TouchableOpacity style={styles.backButton}>
-                <Text style={styles.backIcon}>‹</Text>
+              <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+                <ChevronLeft style={styles.backIcon} />
                 <Text style={styles.backText}>Kembali</Text>
               </TouchableOpacity>
             </View>

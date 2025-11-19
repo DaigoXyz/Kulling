@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { Calendar } from 'lucide-react-native';
+import { Calendar, ChevronLeft } from 'lucide-react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -90,7 +90,7 @@ const PromoVoucherScreen = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backIcon}>‹</Text>
+          <ChevronLeft color="#B91C1C" size={28} style={styles.backIcon} />
           <Text style={styles.backText}>Promo & Voucher</Text>
         </TouchableOpacity>
       </View>
